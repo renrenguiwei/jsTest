@@ -156,22 +156,77 @@ delay(1000)
 //   }
 // );
 
-function foo() {
+// function foo() {
+//   setTimeout(() => {
+//     bar.foo()
+//   }, 1000)
+// }
+//
+// try {
+//   foo()
+// } catch (err) {
+//   console.log('err: ' + err)
+// }
+
+// function foo(cb) {
+//   try {
+//     var x = biz.bar()
+//     cb(null, x) // 成功
+//   } catch(err) {
+//     cb(err)
+//   }
+// }
+// foo(function (err, val) {
+//   if (err) {
+//     console.log('err: ' + err)
+//   } else {
+//     console.log('val: ' + val)
+//   }
+// })
+
+// var p = new Promise((resolve, reject) => {
+//   resolve(42)
+// })
+//
+// p
+//   .then(
+//     function fulfilled(msg) {
+//       console.log(msg.toLowerCase())
+//     },
+//     function rejected(err) {
+//       console.log(err)
+//     }
+//   )
+//   .catch((err) => {
+//     console.log('catch err: ' + err)
+//   })
+
+
+/**
+ * @promise 变体
+ * 1. Promise.all
+ */
+
+// 1. Promise.all
+let async1 = new Promise((resolve, reject) => {
   setTimeout(() => {
-    bar.foo()
-  }, 1000)
-}
+    // resolve('3000ms后返回的msg')
+    reject('3000ms后返回的msg')
+  }, 3000)
+})
+let async2 = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve('4000ms后返回的msg')
+  }, 4000)
+})
 
-try {
-  foo()
-} catch (err) {
-  console.log('err: ' + err)
-}
-
-
-
-
-
+Promise.all([async1, async2])
+  .then(msg => {
+    console.log(msg)
+  })
+  .catch(err => {
+    console.log('catch err: ' + err)
+  })
 
 
 
