@@ -204,26 +204,38 @@ delay(1000)
 
 /**
  * @promise 变体
- * 1. Promise.all
  */
 
 // 1. Promise.all
+// 2. Promise.race
 let async1 = new Promise((resolve, reject) => {
   setTimeout(() => {
-    // resolve('3000ms后返回的msg')
-    reject('3000ms后返回的msg')
-  }, 3000)
+    resolve('2000ms后返回的msg')
+    // reject('1000ms后返回的msg')
+  }, 2000)
 })
 let async2 = new Promise((resolve, reject) => {
   setTimeout(() => {
-    resolve('4000ms后返回的msg')
-  }, 4000)
+    resolve('2000ms后返回的msg')
+  }, 2000)
 })
 
-Promise.all([async1, async2])
-  .then(msg => {
-    console.log(msg)
+function timeoutPromise(delay) {
+  return new Promise(function (resolve, reject){
+    setTimeout(function () {
+      reject('Timeout!')
+    }, delay)
   })
+}
+
+Promise.race([async1, timeoutPromise(3000)])
+  .then(
+    msg => {
+      console.log(msg)
+    },
+    err => {
+      console.log('err: ' + err)
+    })
   .catch(err => {
     console.log('catch err: ' + err)
   })
